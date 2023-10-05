@@ -1,5 +1,6 @@
 package com.example.demo.item;
 
+import com.example.demo.category.entity.CategoryM;
 import com.example.demo.entity.TimeStamp;
 import com.example.demo.shop.entity.Shop;
 import com.example.demo.location.Location;
@@ -35,6 +36,10 @@ public class Item extends TimeStamp {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_mid_id")
+    private CategoryM categoryMidId;
 
     public Item(String name, int price, String comment, URL image, Shop shop) {
         this.id = getId();
