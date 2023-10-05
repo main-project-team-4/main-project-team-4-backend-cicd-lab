@@ -31,22 +31,21 @@ public class Review extends TimeStamp {
     private Shop shop;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id", nullable = false)
+    @JoinColumn(name="member_id")
     private Member member;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="item_id", nullable = false)
+    @JoinColumn(name="item_id")
     private Item item;
 
-    public Review(ReviewRequestDto requestDto, Shop shop, Member member, Item item ){
+    public Review(ReviewRequestDto requestDto, Shop shop, Member member){
         this.comment = requestDto.getComment();
         this.shop = shop;
-        this.item = item;
+        this.member = member;
     }
 
-    public void update(ReviewRequestDto requestDto, Member member){
+    public void update(ReviewRequestDto requestDto){
         this.comment = requestDto.getComment();
-        this.member = member;
     }
 }
