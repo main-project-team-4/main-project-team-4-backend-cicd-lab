@@ -1,8 +1,10 @@
 package com.example.demo.location;
 
+import com.example.demo.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Entity
 @Getter
@@ -21,10 +23,11 @@ public class Location {
     @Column(nullable = false)
     private String address_one;
 
-    public Location(String state, String city, String address_one) {
+    public Location(@RequestBody LocationRequestDto requestDto, Member member) {
         this.id = getId();
-        this.state = state;
-        this.city = city;
-        this.address_one = address_one;
+        this.state = requestDto.getState();
+        this.city = requestDto.getCity();
+        this.address_one = requestDto.getAddress_one();
     }
+
 }
