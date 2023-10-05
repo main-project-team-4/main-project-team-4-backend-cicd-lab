@@ -18,4 +18,14 @@ public class LocationService {
         MessageResponseDto msg = new MessageResponseDto("위치 등록에 성공하였습니다.", 200);
         return ResponseEntity.status(200).body(msg);
     }
+
+    public ResponseEntity<MessageResponseDto> deleteLocation(Long locationId, Member member) {
+        Location location = locationRepository.findById(locationId).orElseThrow(
+                () -> new IllegalArgumentException("해당 주소가 존재하지 않습니다.")
+        );
+
+        locationRepository.delete(location);
+        MessageResponseDto msg = new MessageResponseDto("주소 삭제에 성공하였습니다.", 200);
+        return ResponseEntity.status(200).body(msg);
+    }
 }

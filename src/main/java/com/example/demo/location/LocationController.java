@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +19,11 @@ public class LocationController {
     public ResponseEntity<MessageResponseDto> createLocation(@RequestBody @Valid LocationRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return locationService.createLocation(requestDto, userDetails.getMember());
     }
-
+    @DeleteMapping("/locations/{location_id}")
+    public ResponseEntity<MessageResponseDto> deleteLocation(@PathVariable Long location_id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return locationService.deleteLocation(location_id, userDetails.getMember());
     }
+}
 
 
 
