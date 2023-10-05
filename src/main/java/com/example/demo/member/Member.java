@@ -1,6 +1,7 @@
 package com.example.demo.member;
 
 import com.example.demo.security.UserRoleEnum;
+import com.example.demo.shop.entity.Shop;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,9 @@ public class Member {
     @Column(name = "role")
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
+
+    @OneToOne(mappedBy = "member")
+    private Shop shop;
 
     public Member(String email, String password, String nickname, UserRoleEnum role) {
         this.email = email;
