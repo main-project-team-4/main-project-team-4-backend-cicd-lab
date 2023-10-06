@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -83,5 +84,14 @@ public class ItemService {
 
         MessageResponseDto msg = new MessageResponseDto("상품이 삭제되었습니다.", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(msg);
+    }
+
+    public ResponseEntity<List<ItemSearchResponseDto>> searchItem(
+            String keyword, Long category, Integer layer
+    ) {
+        List<ItemSearchResponseDto> dtoList = itemRepository.searchBy(keyword, category, layer).stream()
+                .map(ItemSearchResponseDto::new)
+                .toList();
+        return ResponseEntity.ok(dtoList);
     }
 }
