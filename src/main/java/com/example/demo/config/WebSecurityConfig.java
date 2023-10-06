@@ -7,6 +7,7 @@ import com.example.demo.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -59,6 +60,16 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        // 카테고리 API
+                        .requestMatchers(HttpMethod.POST, "/api/categories").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/categories/*/categories").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/categories/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/categories/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/categories/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categories/*/categories").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categories/*/items").permitAll()
+
                         .anyRequest().authenticated()
         );
 
