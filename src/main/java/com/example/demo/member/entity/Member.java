@@ -27,10 +27,10 @@ public class Member {
     @Column(name = "phone_num")
     private String phoneNum;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations = new ArrayList<>();
 
-    @Column(name = "image")
+    @Column(name = "image", nullable = true)
     private URL image;
 
     @OneToOne(mappedBy = "member")
@@ -48,6 +48,8 @@ public class Member {
         this.locations.addAll(locations);
     }
 
+
+
     public void updateMember(String username, String password, String nickname, String phoneNum, URL image) {
         this.username = username;
         this.password = password;
@@ -55,4 +57,12 @@ public class Member {
         this.phoneNum = phoneNum;
         this.image = image;
     }
+
+    public void update(String username, String nickname) {
+        this.username = username;
+        this.nickname = nickname;
+    }
+
+
+
 }
