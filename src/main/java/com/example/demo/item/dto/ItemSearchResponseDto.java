@@ -58,7 +58,7 @@ public class ItemSearchResponseDto {
         this.itemName = entity.getName();
         this.price = entity.getPrice();
 
-        Optional<URL> imageUrl = Optional.of(entity).map(Item::getImage);
+        Optional<URL> imageUrl = Optional.of(entity).map(Item::getMain_image);
         this.imageUrl = imageUrl.map(URL::toString).orElse(null);
     }
 }

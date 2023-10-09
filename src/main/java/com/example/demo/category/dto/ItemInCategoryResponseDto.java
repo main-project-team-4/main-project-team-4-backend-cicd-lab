@@ -18,7 +18,7 @@ public class ItemInCategoryResponseDto {
         this.name = entity.getName();
         this.price = entity.getPrice();
         this.imageUrl = Optional.of(entity)
-                .map(Item::getImage)
+                .map(Item::getMain_image)
                 .map(Object::toString)
                 .orElse(null);
     }

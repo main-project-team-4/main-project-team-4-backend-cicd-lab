@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -28,8 +31,13 @@ public class Item extends TimeStamp {
     @Column(nullable = false)
     private String comment;
 
-    @Column(name = "image_url")
-    private URL image;
+    @Column(name = "mainImage_url")
+    private URL main_image;
+
+    @ElementCollection
+    @CollectionTable(name = "item_sub_images", joinColumns = @JoinColumn(name = "item_id"))
+    @Column(name = "subImage_url")
+    private List<URL> sub_images = new ArrayList<>(); // 리스트 필드 초기화
 
     @Column(name = "state")
     private State state;
@@ -46,19 +54,21 @@ public class Item extends TimeStamp {
     @JoinColumn(name = "category_mid_id")
     private CategoryM categoryMidId;
 
-    public Item(String name, int price, String comment, URL image, Shop shop) {
+    public Item(String name, int price, String comment, URL main_image, List<URL> sub_images, Shop shop) {
         this.id = getId();
         this.shop = shop;
         this.name = name;
         this.price = price;
         this.comment = comment;
-        this.image = image;
+        this.main_image = main_image;
+        this.sub_images.addAll(sub_images);
     }
 
-    public void update(URL updatedImageUrlObject, String name, int price, String comment) {
-        this.image = updatedImageUrlObject;
+    public void update(String name, int price, String comment, URL main_image, List<URL> sub_images) {
         this.name = name;
         this.price = price;
         this.comment = comment;
+        this.main_image = main_image;
+        this.sub_images.addAll(sub_images);
     }
 }

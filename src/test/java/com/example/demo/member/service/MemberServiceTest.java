@@ -5,6 +5,7 @@ import com.example.demo.location.repository.LocationRepository;
 import com.example.demo.member.dto.SignupRequestDto;
 import com.example.demo.member.entity.Member;
 import com.example.demo.member.repository.MemberRepository;
+import com.example.demo.shop.service.ShopService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -21,7 +22,9 @@ class MemberServiceTest {
     private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
     private final LocationRepository locationRepository = mock(LocationRepository.class);
 
-    private final MemberService memberService = new MemberService(memberRepository, passwordEncoder, locationRepository);
+    private final ShopService shopService = mock(ShopService.class);
+
+    private final MemberService memberService = new MemberService(memberRepository, passwordEncoder, locationRepository, shopService);
 
     @Test
     @DisplayName("[정상 작동] 회원 가입 - 이미 존재하는 location")

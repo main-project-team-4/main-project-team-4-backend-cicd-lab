@@ -2,6 +2,7 @@ package com.example.demo.item.controller;
 
 import com.example.demo.dto.MessageResponseDto;
 import com.example.demo.item.dto.ItemSearchResponseDto;
+import com.example.demo.item.dto.itemRequestDto;
 import com.example.demo.item.service.ItemService;
 import com.example.demo.member.entity.Member;
 import com.example.demo.security.UserDetailsImpl;
@@ -16,8 +17,8 @@ import java.io.IOException;
 import java.util.List;
 
 
-@RestController
 @RequiredArgsConstructor
+@RestController
 @RequestMapping("/api/items")
 public class ItemController {
 
@@ -27,26 +28,26 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<MessageResponseDto> createItem(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @RequestParam("image") MultipartFile image,
-            @Valid @RequestParam("name") String name,
-            @Valid @RequestParam("price") int price,
-            @Valid @RequestParam("comment") String comment
+            @Valid @RequestParam("main_image") MultipartFile main_image,
+            @Valid @RequestParam("sub_image") List<MultipartFile> sub_images,
+            @RequestPart(value = "requestDto", required = false) itemRequestDto requestDto
             ) throws IOException {
         Member member = userDetails.getMember();
-        return itemService.createItem(member, image, name, price, comment);
+        return itemService.createItem(member, main_image, sub_images, requestDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MessageResponseDto> updateItem(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable Long id,
-            @Valid @RequestParam("image") MultipartFile newFile,
+            @Valid @RequestParam("main_image") MultipartFile new_mainImage,
+            @Valid @RequestParam("sub_image") List<MultipartFile> new_subImages,
             @Valid @RequestParam("name") String name,
             @Valid @RequestParam("price") int price,
             @Valid @RequestParam("comment") String comment
             ) throws IOException {
         Member member = userDetails.getMember();
-        return itemService.updateItem(member, id, newFile, name, price, comment);
+        return itemService.updateItem(member, id, new_mainImage, new_subImages, name, price, comment);
     }
 
     @DeleteMapping("/{id}")

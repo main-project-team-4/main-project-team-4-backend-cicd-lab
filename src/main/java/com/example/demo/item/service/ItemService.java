@@ -1,6 +1,7 @@
 package com.example.demo.item.service;
 
 import com.example.demo.dto.MessageResponseDto;
+import com.example.demo.item.dto.itemRequestDto;
 import com.example.demo.item.entity.Item;
 import com.example.demo.item.repository.ItemRepository;
 import com.example.demo.item.dto.ItemSearchResponseDto;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +28,9 @@ public class ItemService {
     private final ShopRepository shopRepository;
     private final S3Uploader s3Uploader;
 
-    public ResponseEntity<MessageResponseDto> createItem(Member member, MultipartFile image, String name, int price, String comment) throws IOException {
+    public ResponseEntity<MessageResponseDto> createItem(Member member, MultipartFile main_image, List<MultipartFile> sub_images, itemRequestDto requestDto) throws IOException {
+        postBlankCheck(main_image);
+
         Shop shop = shopRepository.findById(member.getShop().getId()).orElseThrow(
                 () -> new IllegalArgumentException("상점을 찾을 수 없습니다"));
 
@@ -35,34 +39,69 @@ public class ItemService {
         }
 
         // 이미지 S3에 업로드 및 URL 가져오기
-        String storedFileName = s3Uploader.upload(image, "images");
-        URL imageUrl = new URL(storedFileName);
+        String mainImage = s3Uploader.upload(main_image, "main_image");
+        URL main_imageUrl = new URL(mainImage);
 
-        itemRepository.save(new Item(name, price, comment, imageUrl, shop));
+        // 다중이미지 S3에 업로드 하기
+
+        List<String> subImages = s3Uploader.uploadMultiple(sub_images, "sub_images");
+        List<URL> sub_imageUrls = new ArrayList<>();
+
+        for (String multipartFile : subImages) {
+            sub_imageUrls.add(new URL(multipartFile));
+        }
+
+        itemRepository.save(new Item(requestDto.getName(), requestDto.getPrice(), requestDto.getComment(), main_imageUrl, sub_imageUrls, shop));
 
         MessageResponseDto msg = new MessageResponseDto("상품이 등록되었습니다.", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(msg);
 
     }
 
+    private void postBlankCheck(MultipartFile imgPaths) {
+        if (imgPaths == null) {
+            throw new IllegalArgumentException("메인 이미지는 필수입니다.");
+        }
+    }
+
     @Transactional
-    public ResponseEntity<MessageResponseDto> updateItem(Member member, Long id, MultipartFile newFile, String name, int price, String comment) throws IOException {
+    public ResponseEntity<MessageResponseDto> updateItem(Member member, Long id, MultipartFile new_mainImage, List<MultipartFile> new_subImages, String name, int price, String comment) throws IOException {
+        postBlankCheck(new_mainImage);
+
         Item item = findItem(id);
         Shop shop = item.getShop();
 
         // 상품을 올린 유저와 수정하려는 유저가 다를 경우
-        if(!shop.getMember().getId().equals(member.getId())) {
+        if (!shop.getMember().getId().equals(member.getId())) {
             throw new IllegalArgumentException("해당 상품을 올린 유저만 상품을 수정 할 수 있습니다.");
         }
 
-        String oldFileUrl = item.getImage().getPath().substring(1);
-        String updatedImageUrl = s3Uploader.updateFile(newFile, oldFileUrl, "images");
-        URL updatedImageUrlObject = new URL(updatedImageUrl);
-        item.update(updatedImageUrlObject, name, price, comment); // Item 엔터티 업데이트
+        // 새로운 메인 이미지 업로드 및 URL 얻기
+        String updatedMainImageUrl = s3Uploader.upload(new_mainImage, "images");
+        URL updatedMainImageUrlObject = new URL(updatedMainImageUrl);
+
+        // 새로운 서브 이미지 업로드 및 URL 얻기
+        List<URL> updatedSubImageUrls = new ArrayList<>();
+        if (new_subImages != null && !new_subImages.isEmpty()) {
+            for (MultipartFile newSubImage : new_subImages) {
+                String updatedSubImageUrl = s3Uploader.upload(newSubImage, "images");
+                URL updatedSubImageUrlObject = new URL(updatedSubImageUrl);
+                updatedSubImageUrls.add(updatedSubImageUrlObject);
+            }
+        }
+
+        // 기존 서브 이미지 목록과 새로운 서브 이미지 목록을 합치기
+        List<URL> combinedSubImages = new ArrayList<>(item.getSub_images());
+        if(combinedSubImages.size()>=6) {
+            throw new IllegalArgumentException("사진은 최대 6장까지 올릴 수 있습니다.");
+        }
+        combinedSubImages.addAll(updatedSubImageUrls);
+
+        // 아이템 업데이트
+        item.update(name, price, comment, updatedMainImageUrlObject, combinedSubImages);
 
         MessageResponseDto msg = new MessageResponseDto("상품이 수정되었습니다.", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(msg);
-
     }
 
 
@@ -80,7 +119,7 @@ public class ItemService {
             throw new IllegalArgumentException("해당 상품을 올린 유저만 상품을 수정 할 수 있습니다.");
         }
 
-        String filePathInS3 = item.getImage().getPath().substring(1);
+        String filePathInS3 = item.getMain_image().getPath().substring(1);
         s3Uploader.deleteFile(filePathInS3);
         itemRepository.delete(item);
 

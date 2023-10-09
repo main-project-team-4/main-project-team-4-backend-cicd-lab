@@ -13,6 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -26,6 +28,8 @@ public class S3Uploader {
         this.amazonS3 = amazonS3;
         this.bucket = bucket;
     }
+
+    // 메인 이미지 저장
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         // 파일 이름에서 공백을 제거한 새로운 파일 이름 생성
         String originalFileName = multipartFile.getOriginalFilename();
@@ -41,6 +45,29 @@ public class S3Uploader {
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
+    }
+
+    // 다중 이미지 저장
+    public List<String> uploadMultiple(List<MultipartFile> multipartFiles, String dirName) throws IOException {
+        List<String> uploadImageUrls = new ArrayList<>();
+
+        for (MultipartFile multipartFile : multipartFiles) {
+            String originalFileName = multipartFile.getOriginalFilename();
+            String uuid = UUID.randomUUID().toString();
+            String uniqueFileName = uuid + "_" + originalFileName.replaceAll("\\s", "_");
+            String fileName = dirName + "/" + uniqueFileName;
+            log.info("fileName: " + fileName);
+            File uploadFile = convert(multipartFile);
+
+            String uploadImageUrl = putS3(uploadFile, fileName);
+            removeNewFile(uploadFile);
+
+
+
+            uploadImageUrls.add(uploadImageUrl);
+        }
+
+        return uploadImageUrls;
     }
 
     private File convert(MultipartFile file) throws IOException {
