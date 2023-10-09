@@ -6,6 +6,7 @@ import com.example.demo.location.repository.LocationRepository;
 import com.example.demo.member.dto.SignupRequestDto;
 import com.example.demo.member.entity.Member;
 import com.example.demo.member.repository.MemberRepository;
+import com.example.demo.shop.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final LocationRepository locationRepository;
+    private final ShopService shopService;
 
     @Transactional
     public ResponseEntity<MessageResponseDto> signup(SignupRequestDto request) {
@@ -45,8 +47,16 @@ public class MemberService {
         Member entity = new Member(username, password, nickname, phoneNum, locationList);
         memberRepository.save(entity);
 
+        // 회원가입 하면서 상점 생성
+        Member member = findMemberByUsername(username);
+        shopService.createShop(request, member);
+
         MessageResponseDto msg = new MessageResponseDto("회원가입에 성공하였습니다.", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(msg);
+    }
+
+    private Member findMemberByUsername(String username){
+        return memberRepository.findMemberByUsername(username);
     }
 
     private void validateUniqueUsername(String username) {

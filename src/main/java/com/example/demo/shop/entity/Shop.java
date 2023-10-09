@@ -2,6 +2,7 @@ package com.example.demo.shop.entity;
 
 import com.example.demo.follow.entity.Follow;
 import com.example.demo.item.entity.Item;
+import com.example.demo.member.dto.SignupRequestDto;
 import com.example.demo.member.entity.Member;
 import com.example.demo.review.entity.Review;
 import com.example.demo.shop.dto.ShopRequestDto;
@@ -22,9 +23,11 @@ public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "intro", nullable = false)
+    @Column(name = "name", nullable = false)
+    private String shopName;
+    @Column(name = "intro")
     private String shopIntro;
-    @Column(name = "star_avg", nullable = false)
+    @Column(name = "star_avg")
     private double star;
 
     @OneToMany(mappedBy = "shop", orphanRemoval = true)
@@ -40,8 +43,13 @@ public class Shop {
     @OneToMany(mappedBy = "shop")
     private List<Follow> follows = new ArrayList<>();
 
+    public Shop(SignupRequestDto requestDto, Member member){
+        this.shopName = requestDto.getNickname();
+        this.member = member;
+    }
+
     public Shop(ShopRequestDto requestDto, Member member){
-        this.shopIntro = requestDto.getShopIntro();
+        this.shopName = requestDto.getShopName();
         this.member = member;
     }
 

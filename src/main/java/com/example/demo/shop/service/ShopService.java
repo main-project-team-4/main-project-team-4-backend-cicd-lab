@@ -1,6 +1,7 @@
 package com.example.demo.shop.service;
 
 import com.example.demo.dto.MessageResponseDto;
+import com.example.demo.member.dto.SignupRequestDto;
 import com.example.demo.member.entity.Member;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.shop.dto.ShopRequestDto;
@@ -17,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShopService {
     private final ShopRepository shopRepository;
 
-    public ResponseEntity<MessageResponseDto> createShop(ShopRequestDto requestDto, UserDetailsImpl userDetails) {
-        Member member = userDetails.getMember();
+    public ResponseEntity<MessageResponseDto> createShop(SignupRequestDto requestDto, Member member) {
         Shop shop = new Shop(requestDto, member);
         shopRepository.save(shop);
 
