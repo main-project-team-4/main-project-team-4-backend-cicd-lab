@@ -73,6 +73,9 @@ public class WebSecurityConfig {
                         // 검색 API
                         .requestMatchers(HttpMethod.GET, "/api/items").permitAll()
 
+                        // 찜 API
+                        .requestMatchers(HttpMethod.POST, "/api/items/*/wishes").permitAll()
+
                         .anyRequest().authenticated()
         );
 

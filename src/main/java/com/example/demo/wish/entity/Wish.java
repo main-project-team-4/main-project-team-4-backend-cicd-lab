@@ -20,4 +20,9 @@ public class Wish {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public Wish(Member member, Item item) {
+        this.member = member;
+        this.item = item;
+    }
 }
