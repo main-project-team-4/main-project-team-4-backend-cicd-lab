@@ -1,13 +1,14 @@
 package com.example.demo.category.controller;
 
-import com.example.demo.category.dto.CategoryRequestDto;
 import com.example.demo.category.dto.CategoryResponseDto;
 import com.example.demo.category.dto.ItemInCategoryResponseDto;
 import com.example.demo.category.service.CategoryService;
-import com.example.demo.dto.MessageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -15,21 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 class CategoryController {
     private final CategoryService categoryService;
-
-    @PostMapping("/api/categories")
-    public ResponseEntity<MessageResponseDto> createLarge(
-            @RequestBody CategoryRequestDto request
-    ) {
-        return categoryService.createLarge(request);
-    }
-
-    @PostMapping("/api/categories/{categoryId}/categories")
-    public ResponseEntity<MessageResponseDto> createMiddle(
-            @PathVariable Long categoryId,
-            @RequestBody CategoryRequestDto request
-    ) {
-        return categoryService.createChild(categoryId, request);
-    }
 
     @GetMapping("/api/categories/{categoryId}")
     public ResponseEntity<CategoryResponseDto> read(
@@ -52,22 +38,5 @@ class CategoryController {
             @RequestParam(defaultValue = "2") int layer
     ) {
         return categoryService.readChildItem(categoryId, layer);
-    }
-
-    @PutMapping("/api/categories/{categoryId}")
-    public ResponseEntity<MessageResponseDto> update(
-            @PathVariable Long categoryId,
-            @RequestParam(defaultValue = "2") int layer,
-            @RequestBody CategoryRequestDto request
-    ) {
-        return categoryService.update(categoryId, layer, request);
-    }
-
-    @DeleteMapping("/api/categories/{categoryId}")
-    public ResponseEntity<MessageResponseDto> delete(
-            @PathVariable Long categoryId,
-            @RequestParam(defaultValue = "2") int layer
-    ) {
-        return categoryService.delete(categoryId, layer);
     }
 }
