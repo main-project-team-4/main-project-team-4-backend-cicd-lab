@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity @Table
@@ -27,7 +28,7 @@ public class Member {
     private String phoneNum;
 
     @OneToMany(mappedBy = "member")
-    private List<Location> locations;
+    private List<Location> locations = new ArrayList<>();
 
     @Column(name = "image")
     private URL image;
@@ -35,11 +36,16 @@ public class Member {
     @OneToOne(mappedBy = "member")
     private Shop shop;
 
-    public Member(String username, String password, String nickname, String phoneNum) {
+    public Member(String username, String password, String nickname, String phoneNum, List<Location> locations) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.phoneNum = phoneNum;
+
+        for (Location location : locations) {
+            location.setMember(this);
+        }
+        this.locations.addAll(locations);
     }
 
     public void updateMember(String username, String password, String nickname, String phoneNum, URL image) {

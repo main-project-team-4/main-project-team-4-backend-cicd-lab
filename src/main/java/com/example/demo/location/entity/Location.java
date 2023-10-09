@@ -5,10 +5,10 @@ import com.example.demo.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
+import lombok.Setter;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 public class Location {
     @Id
@@ -16,23 +16,20 @@ public class Location {
     private Long id;
 
     @Column(nullable = false)
-    private String state;
-
-    @Column(nullable = false)
-    private String city;
-
-    @Column(nullable = false)
-    private String address_one;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Location(@RequestBody LocationRequestDto requestDto, Member member) {
+    public Location(LocationRequestDto requestDto, Member member) {
         this.id = getId();
-        this.state = requestDto.getState();
-        this.city = requestDto.getCity();
-        this.address_one = requestDto.getAddress_one();
+        this.name = requestDto.getName();
+        this.member = member;
+    }
+
+    public Location(String location) {
+        this.name = location;
     }
 
 }
