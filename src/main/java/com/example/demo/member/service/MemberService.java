@@ -4,7 +4,6 @@ import com.example.demo.dto.MessageResponseDto;
 import com.example.demo.member.dto.SignupRequestDto;
 import com.example.demo.member.entity.Member;
 import com.example.demo.member.repository.MemberRepository;
-import com.example.demo.repository.RedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RedisRepository redisRepository;
 
     public ResponseEntity<MessageResponseDto> signup(SignupRequestDto request) {
 
