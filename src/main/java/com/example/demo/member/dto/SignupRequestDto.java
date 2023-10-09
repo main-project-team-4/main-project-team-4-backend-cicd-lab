@@ -7,10 +7,7 @@ import jakarta.validation.constraints.Pattern;
 public class SignupRequestDto {
 
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "올바른 이메일 형식이 아닙니다.")
-    private String email;
-
-//    private String checkemail;     // email로 보낸 코드
-
+    private String username;
 
 //    @Pattern(
 //            regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
@@ -22,9 +19,9 @@ public class SignupRequestDto {
 
     private String phoneNum;
 
-    private String address;
+    private String phoneNum_check;
 
-    private boolean role = false;
+    private String location;
 
 
 }
