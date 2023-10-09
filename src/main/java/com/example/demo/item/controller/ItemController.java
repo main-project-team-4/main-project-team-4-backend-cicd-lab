@@ -60,11 +60,9 @@ public class ItemController {
 
     @GetMapping
     public ResponseEntity<List<ItemSearchResponseDto>> searchItem(
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Long category,
-            @RequestParam(defaultValue = "2") Integer layer
+            @RequestParam(required = false) String keyword
     ) {
-        return itemService.searchItem(keyword, category, layer);
+        return itemService.searchItem(keyword);
     }
 
 }

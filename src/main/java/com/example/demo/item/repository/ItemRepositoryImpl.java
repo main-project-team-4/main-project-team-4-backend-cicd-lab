@@ -17,21 +17,15 @@ public class ItemRepositoryImpl implements SearchRepository {
 
     @Override
     public List<Item> searchBy(
-            String keyword, Long category, Integer layer
+            String keyword
     ) {
         String query = "SELECT i FROM Item i %s %s";
-        String joinQuery = categoryFetchQuery(category);
         String whereQuery = QueryBuilder.aggWhereQuery(
-                keywordWhereQuery(keyword),
-                categoryWhereQuery(category, layer)
+                keywordWhereQuery(keyword)
         );
 
-        query = String.format(query, joinQuery, whereQuery);
+        query = String.format(query, "", whereQuery);
         return em.createQuery(query, Item.class).getResultList();
-    }
-
-    public String categoryFetchQuery(Long category) {
-        return (category != null) ? "JOIN FETCH i.categoryMidId" : "";
     }
 
     public String keywordWhereQuery(String keyword) {
@@ -40,19 +34,5 @@ public class ItemRepositoryImpl implements SearchRepository {
         String keywordLowerCase = keyword.toLowerCase();
         String query = "LOWER(i.name) LIKE CONCAT('%', ':keyword', '%')";
         return query.replace(":keyword", keywordLowerCase);
-    }
-
-    public String categoryWhereQuery(Long category, Integer layer) {
-        if (category == null) return null;
-        return String.format(selectCategoryWhereQuery(layer), category);
-    }
-
-    public String selectCategoryWhereQuery(Integer layer) {
-        CategoryType categoryType = CategoryType.getTypeByLayer(layer)
-                .orElseThrow(() -> new IllegalArgumentException(layer + "라는 Layer값은 존재하지 않습니다."));
-        return switch (categoryType) {
-            case LARGE -> "i.categoryMidId.parent.id = %s";
-            case MIDDLE -> "i.categoryMidId.id = %s";
-        };
     }
 }
