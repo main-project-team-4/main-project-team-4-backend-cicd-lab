@@ -70,6 +70,9 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/categories/*/categories").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/*/items").permitAll()
 
+                        // 검색 API
+                        .requestMatchers(HttpMethod.GET, "/api/items").permitAll()
+
                         .anyRequest().authenticated()
         );
 

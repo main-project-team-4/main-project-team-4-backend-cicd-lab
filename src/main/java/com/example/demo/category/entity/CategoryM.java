@@ -1,7 +1,7 @@
 package com.example.demo.category.entity;
 
 import com.example.demo.category.dto.CategoryRequestDto;
-import com.example.demo.item.Item;
+import com.example.demo.item.entity.Item;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

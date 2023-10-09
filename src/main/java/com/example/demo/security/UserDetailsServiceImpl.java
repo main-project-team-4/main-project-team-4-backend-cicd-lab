@@ -1,7 +1,7 @@
 package com.example.demo.security;
 
-import com.example.demo.member.Member;
-import com.example.demo.member.MemberRepository;
+import com.example.demo.member.entity.Member;
+import com.example.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(username)
+        Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Not Found " + username));
 
         return new UserDetailsImpl(member);

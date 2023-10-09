@@ -1,6 +1,6 @@
 package com.example.demo.security;
 
-import com.example.demo.member.Member;
+import com.example.demo.member.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,12 +27,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return member.getEmail();
+        return member.getUsername();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRoleEnum role = member.getRole();
+        UserRoleEnum role = UserRoleEnum.USER;
         String authority = role.getAuthority();
 
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
