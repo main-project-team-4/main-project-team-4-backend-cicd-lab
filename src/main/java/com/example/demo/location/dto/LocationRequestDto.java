@@ -9,8 +9,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class LocationRequestDto {
-
-    private String state;
-    private String city;
-    private String address_one;
+    private String name;
 }

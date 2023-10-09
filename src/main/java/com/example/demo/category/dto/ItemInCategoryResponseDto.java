@@ -4,6 +4,8 @@ import com.example.demo.item.entity.Item;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @Getter @RequiredArgsConstructor
 public class ItemInCategoryResponseDto {
     private Long id;
@@ -15,6 +17,9 @@ public class ItemInCategoryResponseDto {
         this.id = entity.getId();
         this.name = entity.getName();
         this.price = entity.getPrice();
-        this.imageUrl = null;
+        this.imageUrl = Optional.of(entity)
+                .map(Item::getImage)
+                .map(Object::toString)
+                .orElse(null);
     }
 }

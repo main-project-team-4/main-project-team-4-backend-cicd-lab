@@ -89,9 +89,9 @@ public class ItemService {
     }
 
     public ResponseEntity<List<ItemSearchResponseDto>> searchItem(
-            String keyword, Long category, Integer layer
+            String keyword
     ) {
-        List<ItemSearchResponseDto> dtoList = itemRepository.searchBy(keyword, category, layer).stream()
+        List<ItemSearchResponseDto> dtoList = itemRepository.searchBy(keyword).stream()
                 .map(ItemSearchResponseDto::new)
                 .toList();
         return ResponseEntity.ok(dtoList);
