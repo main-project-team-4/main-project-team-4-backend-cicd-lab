@@ -1,6 +1,6 @@
 package com.example.demo.category.dto;
 
-import com.example.demo.item.Item;
+import com.example.demo.item.entity.Item;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

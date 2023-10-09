@@ -13,7 +13,7 @@ public class ShopResponseDto {
 
     public ShopResponseDto(Shop shop){
         this.id = shop.getId();
-        this.shopName = shop.getShopName();
+        this.shopName = shop.getMember().getNickname();
         this.shopIntro = shop.getShopIntro();
     }
 }

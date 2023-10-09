@@ -1,6 +1,6 @@
 package com.example.demo.jwt;
 
-import com.example.demo.member.LoginRequestDto;
+import com.example.demo.member.dto.LoginRequestDto;
 import com.example.demo.dto.MessageResponseDto;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.security.UserRoleEnum;
@@ -49,9 +49,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
-        UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getMember().getRole();
 
-        String token = jwtUtil.createToken(username, role);
+        String token = jwtUtil.createToken(username, UserRoleEnum.USER);
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
         // 상태 코드 명시.

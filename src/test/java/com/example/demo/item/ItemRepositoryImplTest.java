@@ -1,5 +1,7 @@
 package com.example.demo.item;
 
+import com.example.demo.item.entity.Item;
+import com.example.demo.item.repository.ItemRepositoryImpl;
 import com.example.demo.utils.LoadTeatCaseCategory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
