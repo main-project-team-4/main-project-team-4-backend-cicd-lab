@@ -20,9 +20,4 @@ public class Follow {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
     private Shop shop;
-
-    public Follow(Member member, Shop shop) {
-        this.member = member;
-        this.shop = shop;
-    }
 }

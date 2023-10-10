@@ -2,13 +2,10 @@ package com.example.demo.follow.controller;
 
 import com.example.demo.follow.dto.FollowMemberResponseDto;
 import com.example.demo.follow.service.FollowService;
-import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,14 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FollowController {
     private final FollowService followService;
-
-    @PostMapping("/api/shops/{shopId}/follows")
-    public ResponseEntity<Void> doShopFollow(
-            @PathVariable Long shopId,
-            @AuthenticationPrincipal UserDetailsImpl principal
-            ) {
-        return followService.doShopFollow(principal.getMember() , shopId);
-    }
 
     @GetMapping("/api/members/{memberId}/followers")
     public ResponseEntity<List<FollowMemberResponseDto>> readFollowersByMemberId(
