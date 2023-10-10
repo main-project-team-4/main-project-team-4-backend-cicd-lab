@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -76,6 +78,9 @@ public class WebSecurityConfig {
                         // 찜 API
                         .requestMatchers(HttpMethod.POST, "/api/items/*/wishes").permitAll()
 
+                        // websocket
+                        .requestMatchers(webSocketRequestMatcher()).permitAll()
+
                         .anyRequest().authenticated()
         );
 
@@ -83,5 +88,9 @@ public class WebSecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    private RequestMatcher webSocketRequestMatcher() {
+        return new AntPathRequestMatcher("/ws/chat");
     }
 }
