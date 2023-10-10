@@ -39,4 +39,11 @@ public class FollowController {
     ) {
         return followService.readFollowingsByMemberId(memberId);
     }
+
+    @GetMapping("/api/mypages/followerlists")
+    public ResponseEntity<List<FollowMemberResponseDto>> readFollowerListInMyPage(
+            @AuthenticationPrincipal UserDetailsImpl principal
+    ) {
+        return followService.readFollowingsByMemberId(principal.getMember().getId());
+    }
 }

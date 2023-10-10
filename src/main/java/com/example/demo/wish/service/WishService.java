@@ -3,12 +3,14 @@ package com.example.demo.wish.service;
 import com.example.demo.item.entity.Item;
 import com.example.demo.item.repository.ItemRepository;
 import com.example.demo.member.entity.Member;
+import com.example.demo.wish.dto.WishListResponseDto;
 import com.example.demo.wish.entity.Wish;
 import com.example.demo.wish.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,5 +36,12 @@ public class WishService {
         );
 
         return ResponseEntity.ok(null);
+    }
+
+    public ResponseEntity<List<WishListResponseDto>> readMyWishLists(Member member) {
+        List<WishListResponseDto> dtoList = wishRepository.findByMember(member).stream()
+                .map(WishListResponseDto::new)
+                .toList();
+        return ResponseEntity.ok(dtoList);
     }
 }
