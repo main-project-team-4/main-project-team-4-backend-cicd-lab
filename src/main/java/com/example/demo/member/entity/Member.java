@@ -1,5 +1,6 @@
 package com.example.demo.member.entity;
 
+import com.example.demo.follow.entity.Follow;
 import com.example.demo.location.entity.Location;
 import com.example.demo.shop.entity.Shop;
 import jakarta.persistence.*;
@@ -35,6 +36,9 @@ public class Member {
 
     @OneToOne(mappedBy = "member")
     private Shop shop;
+
+    @OneToMany(mappedBy = "member")
+    private List<Follow> followList = new ArrayList<>();
 
     public Member(String username, String password, String nickname, String phoneNum, List<Location> locations) {
         this.username = username;
