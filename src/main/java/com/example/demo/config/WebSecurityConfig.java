@@ -74,7 +74,8 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/items").permitAll()
 
                         // 찜 API
-                        .requestMatchers(HttpMethod.POST, "/api/items/*/wishes").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/items/*/wishes").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/mypages/wishlists").authenticated()
 
                         // 팔로우 관련 API
                         .requestMatchers(HttpMethod.POST, "/api/members/*/followers").authenticated()
