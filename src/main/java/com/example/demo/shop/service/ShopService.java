@@ -5,6 +5,7 @@ import com.example.demo.member.dto.SignupRequestDto;
 import com.example.demo.member.entity.Member;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.shop.dto.ShopRequestDto;
+import com.example.demo.shop.dto.ShopResponseDto;
 import com.example.demo.shop.entity.Shop;
 import com.example.demo.shop.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,10 @@ public class ShopService {
         return shopRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 상점이 존재하지 않습니다.")
         );
+    }
+
+    public ShopResponseDto insertShop(Member member) {
+        Shop shop = findShop(member.getId());
+        return new ShopResponseDto(shop);
     }
 }

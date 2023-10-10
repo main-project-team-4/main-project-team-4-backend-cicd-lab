@@ -1,6 +1,7 @@
 package com.example.demo.item.service;
 
 import com.example.demo.dto.MessageResponseDto;
+import com.example.demo.item.dto.ItemResponseDto;
 import com.example.demo.item.dto.itemRequestDto;
 import com.example.demo.item.entity.Item;
 import com.example.demo.item.repository.ItemRepository;
@@ -134,5 +135,10 @@ public class ItemService {
                 .map(ItemSearchResponseDto::new)
                 .toList();
         return ResponseEntity.ok(dtoList);
+    }
+
+    public ItemResponseDto showItem(Long id) {
+        Item item = findItem(id);
+        return new ItemResponseDto(item);
     }
 }

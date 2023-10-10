@@ -4,6 +4,7 @@ import com.example.demo.dto.MessageResponseDto;
 import com.example.demo.member.dto.SignupRequestDto;
 import com.example.demo.member.entity.Member;
 import com.example.demo.security.UserDetailsImpl;
+import com.example.demo.shop.dto.ShopResponseDto;
 import com.example.demo.shop.service.ShopService;
 import com.example.demo.shop.dto.ShopRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -31,4 +32,14 @@ public class ShopController {
     public ResponseEntity<MessageResponseDto> deleteShop(@PathVariable("shopId") Long shopId){
         return shopService.deleteShop(shopId);
     }
+
+    // 내 상점 바로가기
+    @GetMapping
+    public ShopResponseDto insertShop(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        Member member = userDetails.getMember();
+        return shopService.insertShop(member);
+    }
+
 }
