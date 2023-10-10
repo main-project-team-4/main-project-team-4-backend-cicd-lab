@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class MemberController {
+public class MemberController implements MemberDocs{
     private final MemberService memberService;
 
     @PostMapping("/signup")

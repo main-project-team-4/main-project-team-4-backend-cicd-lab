@@ -69,6 +69,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/categories/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/*/categories").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories/*/items").permitAll()
+                        .requestMatchers(        "/",        "/v3/api-docs/**",        "swagger-ui/**").permitAll()// swagger
 
                         // 검색 API
                         .requestMatchers(HttpMethod.GET, "/api/items").permitAll()

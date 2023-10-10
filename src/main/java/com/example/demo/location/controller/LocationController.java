@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class LocationController {
+public class LocationController implements LocationDocs{
     private final LocationService locationService;
 
     @PostMapping("/locations")

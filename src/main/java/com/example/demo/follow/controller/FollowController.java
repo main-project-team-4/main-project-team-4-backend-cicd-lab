@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class FollowController {
+public class FollowController implements FollowDocs {
     private final FollowService followService;
 
     @PostMapping("/api/shops/{shopId}/follows")

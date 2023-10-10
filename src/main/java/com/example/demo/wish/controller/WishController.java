@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class WishController {
+public class WishController implements WishDocs{
     private final WishService wishService;
 
     @PostMapping("/api/items/{itemId}/wishes")
