@@ -1,6 +1,7 @@
 package com.example.demo.item.controller;
 
 import com.example.demo.dto.MessageResponseDto;
+import com.example.demo.item.dto.ItemResponseDto;
 import com.example.demo.item.dto.ItemSearchResponseDto;
 import com.example.demo.item.dto.itemRequestDto;
 import com.example.demo.item.service.ItemService;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,12 +44,10 @@ public class ItemController {
             @PathVariable Long id,
             @Valid @RequestParam("main_image") MultipartFile new_mainImage,
             @Valid @RequestParam("sub_image") List<MultipartFile> new_subImages,
-            @Valid @RequestParam("name") String name,
-            @Valid @RequestParam("price") int price,
-            @Valid @RequestParam("comment") String comment
+            @RequestPart(value = "requestDto", required = false) itemRequestDto requestDto
             ) throws IOException {
         Member member = userDetails.getMember();
-        return itemService.updateItem(member, id, new_mainImage, new_subImages, name, price, comment);
+        return itemService.updateItem(member, id, new_mainImage, new_subImages, requestDto);
     }
 
     @DeleteMapping("/{id}")
@@ -58,6 +58,15 @@ public class ItemController {
         Member member = userDetails.getMember();
         return itemService.deleteItem(member, id);
     }
+
+    // 거래 물품 단일 조회
+    @GetMapping("/{item_id}")
+    public ItemResponseDto showItem(
+            @PathVariable Long item_id
+    ) {
+        return itemService.showItem(item_id);
+    }
+
 
     @GetMapping
     public ResponseEntity<List<ItemSearchResponseDto>> searchItem(
