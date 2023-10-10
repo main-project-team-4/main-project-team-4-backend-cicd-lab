@@ -65,7 +65,7 @@ public class ItemService {
     }
 
     @Transactional
-    public ResponseEntity<MessageResponseDto> updateItem(Member member, Long id, MultipartFile new_mainImage, List<MultipartFile> new_subImages, String name, int price, String comment) throws IOException {
+    public ResponseEntity<MessageResponseDto> updateItem(Member member, Long id, MultipartFile new_mainImage, List<MultipartFile> new_subImages, itemRequestDto requestDto) throws IOException {
         postBlankCheck(new_mainImage);
 
         Item item = findItem(id);
@@ -98,7 +98,7 @@ public class ItemService {
         combinedSubImages.addAll(updatedSubImageUrls);
 
         // 아이템 업데이트
-        item.update(name, price, comment, updatedMainImageUrlObject, combinedSubImages);
+        item.update(requestDto.getName(), requestDto.getPrice(), requestDto.getComment(), updatedMainImageUrlObject, combinedSubImages);
 
         MessageResponseDto msg = new MessageResponseDto("상품이 수정되었습니다.", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(msg);

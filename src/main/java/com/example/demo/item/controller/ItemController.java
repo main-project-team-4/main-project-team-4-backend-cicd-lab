@@ -42,12 +42,10 @@ public class ItemController {
             @PathVariable Long id,
             @Valid @RequestParam("main_image") MultipartFile new_mainImage,
             @Valid @RequestParam("sub_image") List<MultipartFile> new_subImages,
-            @Valid @RequestParam("name") String name,
-            @Valid @RequestParam("price") int price,
-            @Valid @RequestParam("comment") String comment
+            @RequestPart(value = "requestDto", required = false) itemRequestDto requestDto
             ) throws IOException {
         Member member = userDetails.getMember();
-        return itemService.updateItem(member, id, new_mainImage, new_subImages, name, price, comment);
+        return itemService.updateItem(member, id, new_mainImage, new_subImages, requestDto);
     }
 
     @DeleteMapping("/{id}")

@@ -64,6 +64,10 @@ public class Item extends TimeStamp {
         this.sub_images.addAll(sub_images);
     }
 
+    public void updateSubImage(List<URL> sub_images) {
+        this.sub_images.addAll(sub_images);
+    }
+
     public void update(String name, int price, String comment, URL main_image, List<URL> sub_images) {
         this.name = name;
         this.price = price;
