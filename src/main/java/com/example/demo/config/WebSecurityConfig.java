@@ -81,6 +81,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/members/*/followers").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/members/*/followers").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/members/*/followings").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/mypages/followerlists").authenticated()
 
                         .anyRequest().authenticated()
         );
