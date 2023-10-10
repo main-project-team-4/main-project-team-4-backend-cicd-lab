@@ -79,6 +79,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/items/*/wishes").permitAll()
 
                         // websocket
+                        .requestMatchers(HttpMethod.POST, "/chat").permitAll()
                         .requestMatchers(webSocketRequestMatcher()).permitAll()
 
                         .anyRequest().authenticated()
