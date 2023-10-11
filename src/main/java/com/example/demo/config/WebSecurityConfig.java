@@ -4,6 +4,7 @@ import com.example.demo.jwt.JwtAuthenticationFilter;
 import com.example.demo.jwt.JwtAuthorizationFilter;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.security.UserDetailsServiceImpl;
+import com.example.demo.util.FilterChainRingContainer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final FilterChainRingContainer filterChainRingContainer;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,6 +54,9 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // 각종 추가 설정
+        filterChainRingContainer.configure(http);
+
         // CSRF 설정
         http.csrf((csrf) -> csrf.disable());
 
@@ -59,30 +66,34 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(antMatcher("/api/auth/**")).permitAll()
 
                         // 카테고리 API
-                        .requestMatchers(HttpMethod.POST, "/api/categories").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/categories/*/categories").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/categories/*").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/categories/*").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/categories/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/categories/*/categories").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/categories/*/items").permitAll()
-                        .requestMatchers(        "/",        "/v3/api-docs/**",        "swagger-ui/**").permitAll()// swagger
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/categories")).hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/categories/*/categories")).hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.PUT, "/api/categories/*")).hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.DELETE, "/api/categories/*")).hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/categories")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/items")).permitAll()
+
+                        // swagger
+                        .requestMatchers(antMatcher("/")).permitAll()
+                        .requestMatchers(antMatcher("/v3/api-docs/**")).permitAll()
+                        .requestMatchers(antMatcher("swagger-ui/**")).permitAll()
 
                         // 검색 API
-                        .requestMatchers(HttpMethod.GET, "/api/items").permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/items")).permitAll()
 
                         // 찜 API
-                        .requestMatchers(HttpMethod.POST, "/api/items/*/wishes").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/mypages/wishlists").authenticated()
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/items/*/wishes")).authenticated()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/mypages/wishlists")).authenticated()
 
                         // 팔로우 관련 API
-                        .requestMatchers(HttpMethod.POST, "/api/members/*/followers").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/members/*/followers").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/members/*/followings").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/mypages/followerlists").authenticated()
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/members/*/followers")).authenticated()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/members/*/followers")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/members/*/followings")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/mypages/followerlists")).authenticated()
 
                         .anyRequest().authenticated()
         );
