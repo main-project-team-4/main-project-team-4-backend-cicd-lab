@@ -80,7 +80,7 @@ public class WebSecurityConfig {
                         // swagger
                         .requestMatchers(antMatcher("/")).permitAll()
                         .requestMatchers(antMatcher("/v3/api-docs/**")).permitAll()
-                        .requestMatchers(antMatcher("swagger-ui/**")).permitAll()
+                        .requestMatchers(antMatcher("/swagger-ui/**")).permitAll()
 
                         // 검색 API
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/items")).permitAll()
