@@ -5,6 +5,7 @@ import com.example.demo.item.entity.Item;
 import com.example.demo.member.entity.Member;
 import com.example.demo.shop.entity.Shop;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,30 +15,31 @@ import java.util.Optional;
 
 @Getter @AllArgsConstructor
 public class ItemSearchResponseDto {
+    @Schema(description = "상품의 id", example = "1")
     @JsonProperty("item_id")
     private Long itemId;
-
+    @Schema(description = "상품의 생성일", example = "2021-08-22T15:00:00")
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
-
+    @Schema(description = "상품의 카테고리 id", example = "1")
     @JsonProperty("category_id")
     private Long categoryId;
-
+    @Schema(description = "상품의 카테고리 이름", example = "남성의류")
     @JsonProperty("category_name")
     private String categoryName;
-
+    @Schema(description = "상품의 판매자 id", example = "1")
     @JsonProperty("user_id")
     private Long userId;
-
+    @Schema(description = "상품의 판매자 닉네임", example = "user1")
     @JsonProperty("user_nickname")
     private String userNickname;
-
+    @Schema(description = "상품의 이름", example = "아비렉스 가죽자켓")
     @JsonProperty("item_name")
     private String itemName;
-
+    @Schema(description = "상품의 가격", example = "10000")
     @JsonProperty("price")
     private int price;
-
+    @Schema(description = "상품의 메인 이미지", example = "https://m.hoopbro.co.kr/web/product/big/202308/68034e9c48fe22a0aab33bb52b9b0f4c.jpg")
     @JsonProperty("image_url")
     private String imageUrl;
 
