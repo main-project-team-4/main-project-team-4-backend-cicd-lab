@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/items")
-public class ItemController {
+public class ItemController implements ItemDocs {
 
     private final ItemService itemService;
 
