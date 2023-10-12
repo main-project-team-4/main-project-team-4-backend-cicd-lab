@@ -23,4 +23,6 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
             "JOIN s.follows f " +
             "WHERE f.member.id = :memberId")
     List<Member> findFollowingsByMember_Id(Long memberId);
+
+    Optional<Member> findByNickname(String nickname);
 }

@@ -1,16 +1,17 @@
 package com.example.demo.member.controller;
 
 import com.example.demo.dto.MessageResponseDto;
+import com.example.demo.kakao.service.KakaoService;
 import com.example.demo.member.dto.LoginRequestDto;
 import com.example.demo.member.dto.LoginResponseDto;
 import com.example.demo.member.dto.MemberInfoRequestDto;
-import com.example.demo.member.dto.SignupRequestDto;
-import com.example.demo.kakao.service.KakaoService;
 import com.example.demo.member.service.MemberService;
+import com.example.demo.security.UserDetailsImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,14 +21,12 @@ public class MemberController implements MemberDocs{
     private final MemberService memberService;
     private final KakaoService kakaoService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<MessageResponseDto> signup(@Valid @RequestBody SignupRequestDto request) {
-        return memberService.signup(request);
-    }
-
     @PutMapping("/members/me")
-    public ResponseEntity<MessageResponseDto> updateMember(@Valid @RequestBody MemberInfoRequestDto request, @RequestHeader("Authorization") String token) {
-        return memberService.updateMember(request, token);//token을 받아서 수정
+    public ResponseEntity<MessageResponseDto> updateMember(
+            @RequestBody MemberInfoRequestDto request,
+            @AuthenticationPrincipal UserDetailsImpl principal
+    ) {
+        return memberService.updateMember(request, principal.getMember());//token을 받아서 수정
     }
 
     @DeleteMapping("/members/me")
