@@ -73,6 +73,7 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/categories/*/categories")).hasRole("ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.PUT, "/api/categories/*")).hasRole("ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.DELETE, "/api/categories/*")).hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/categories")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/items")).permitAll()

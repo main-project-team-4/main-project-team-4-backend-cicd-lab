@@ -39,4 +39,9 @@ class CategoryController implements CategoryDocs{
     ) {
         return categoryService.readChildItem(categoryId, layer);
     }
+
+    @GetMapping("/api/categories")
+    public ResponseEntity<List<CategoryResponseDto>> readCategoryLarge() {
+        return categoryService.readItemsLarge();
+    }
 }
