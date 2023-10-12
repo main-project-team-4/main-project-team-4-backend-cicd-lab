@@ -9,6 +9,8 @@ import com.example.demo.member.entity.Member;
 import com.example.demo.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
@@ -69,10 +71,11 @@ public class ItemController implements ItemDocs {
 
 
     @GetMapping
-    public ResponseEntity<List<ItemSearchResponseDto>> searchItem(
-            @RequestParam(required = false) String keyword
+    public ResponseEntity<Page<ItemSearchResponseDto>> searchItem(
+            @RequestParam(required = false) String keyword,
+            Pageable pageable
     ) {
-        return itemService.searchItem(keyword);
+        return itemService.searchItem(keyword, pageable);
     }
 
 }

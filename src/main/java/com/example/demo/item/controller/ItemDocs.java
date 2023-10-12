@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.ErrorResponse;
@@ -188,7 +190,14 @@ public interface ItemDocs {
    @Operation(
             summary = "상품 검색 API",
             description = """
-                    상품 검색 API
+                    상품 검색 API.
+                    /api/items?page=0&size=10&sort=createdAt,desc&sort=name,asc...
+                    위와 같은 방식으로 요청을 보낼 수 있습니다.
+                    page는 말그대로 페이지 수를 뜻하며 인덱스는 0부터 시작합니다.
+                    size는 한 페이지당 포합된 요소수를 의미합니다.
+                    sort는 정렬 기준을 의미하며 중복해서 사용할 경우,
+                    앞의 정렬 기준을 우선으로 고려하며, 같은 순위의 요소의 경우,
+                    그 때서야 2번째 정렬 기준을 고려합니다.
                     """
     )
     @ApiResponse(
@@ -199,14 +208,6 @@ public interface ItemDocs {
                     schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ItemSearchResponseDto.class)
             )
     )
-    @ApiResponse(
-            responseCode = "404",
-            description = "'~~'번 상품은 존재하지 않음.",
-            content = @io.swagger.v3.oas.annotations.media.Content(
-                    mediaType = "application/json",
-                    schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
-            )
-    )
    @ApiResponse(
             responseCode = "500",
             description = "서버 에러",
@@ -215,7 +216,8 @@ public interface ItemDocs {
                     schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
             )
     )
-    ResponseEntity<List<ItemSearchResponseDto>> searchItem(
-            @RequestParam(required = false) String keyword
+    ResponseEntity<Page<ItemSearchResponseDto>> searchItem(
+            @RequestParam(required = false) String keyword,
+            Pageable pageable
     );
 }
