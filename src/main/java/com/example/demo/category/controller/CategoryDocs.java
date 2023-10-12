@@ -119,4 +119,20 @@ public interface CategoryDocs {
             @RequestParam(defaultValue = "2") int layer
     );
 
+    @Operation(
+            summary = "모든 대분류 카테고리 목록 조회",
+            description = """
+                    모든 대분류 카테고리 목록 조회
+                    """
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "정상 작동",
+            content = @io.swagger.v3.oas.annotations.media.Content(
+                    mediaType = "application/json",
+                    schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = CategoryResponseDto.class)
+            )//응답받을 데이터 타입
+    )
+    ResponseEntity<List<CategoryResponseDto>> readCategoryLarge();
+
 }

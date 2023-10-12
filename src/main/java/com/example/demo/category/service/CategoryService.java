@@ -85,4 +85,11 @@ public class CategoryService {
         return CategoryType.getTypeByLayer(layer)
                 .orElseThrow(() -> new IllegalArgumentException(layer + " 라는 Layer는 존재하지 않습니다."));
     }
+
+    public ResponseEntity<List<CategoryResponseDto>> readItemsLarge() {
+        List<CategoryResponseDto> categoryList = categoryLRepository.findAll().stream()
+                .map(CategoryResponseDto::new)
+                .toList();
+        return ResponseEntity.ok(categoryList);
+    }
 }
