@@ -77,19 +77,9 @@ public class MemberService {
         return locationRepository.save(entity);
     }
 
-     public ResponseEntity<MessageResponseDto> deleteMember(LoginRequestDto request, String token) {
+     public ResponseEntity<MessageResponseDto> deleteMember(Member member) {
+        memberRepository.delete(member);
 
-        String username = request.getUsername();//username을 받아서 삭제
-        String password = request.getPassword();//password를 받아서 삭제
-
-        Member member = memberRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
-        );
-        if(!passwordEncoder.matches(password, member.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-
-        memberRepository.delete(member);//삭제
         MessageResponseDto msg = new MessageResponseDto("회원탈퇴에 성공하였습니다.", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(msg);
      }

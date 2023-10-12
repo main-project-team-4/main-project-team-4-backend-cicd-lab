@@ -82,7 +82,7 @@ public interface MemberDocs {
                     schema = @Schema(implementation = ErrorResponse.class)
             )
     )
-    ResponseEntity<MessageResponseDto> deleteMember(@Valid @RequestBody LoginRequestDto request, @RequestHeader("Authorization") String token);
+    ResponseEntity<MessageResponseDto> deleteMember(UserDetailsImpl principal);
 
 
 }

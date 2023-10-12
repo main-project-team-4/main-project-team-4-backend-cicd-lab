@@ -30,8 +30,10 @@ public class MemberController implements MemberDocs{
     }
 
     @DeleteMapping("/members/me")
-    public ResponseEntity<MessageResponseDto> deleteMember(@Valid @RequestBody LoginRequestDto request, @RequestHeader("Authorization") String token) {
-        return memberService.deleteMember(request, token);//token을 받아서 삭제
+    public ResponseEntity<MessageResponseDto> deleteMember(
+            @AuthenticationPrincipal UserDetailsImpl principal
+    ) {
+        return memberService.deleteMember(principal.getMember());//token을 받아서 삭제
     }
 
     // 카카오 소셜 로그인 테스트를 위한 URL
