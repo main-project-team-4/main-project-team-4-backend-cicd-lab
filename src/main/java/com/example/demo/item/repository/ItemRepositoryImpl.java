@@ -1,38 +1,50 @@
 package com.example.demo.item.repository;
 
-import com.example.demo.category.type.CategoryType;
 import com.example.demo.item.entity.Item;
-import com.example.demo.util.QueryBuilder;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static com.example.demo.item.entity.QItem.item;
+
 @Repository
+@RequiredArgsConstructor
 public class ItemRepositoryImpl implements SearchRepository {
-    @PersistenceContext
-    private EntityManager em;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Item> searchBy(
-            String keyword
+    public Page<Item> searchBy(
+            String keyword,
+            Pageable pageable
     ) {
-        String query = "SELECT i FROM Item i %s %s";
-        String whereQuery = QueryBuilder.aggWhereQuery(
+        Predicate[] predicates = {
                 keywordWhereQuery(keyword)
-        );
+        };
 
-        query = String.format(query, "", whereQuery);
-        return em.createQuery(query, Item.class).getResultList();
+        List<Item> result = jpaQueryFactory.select(item)
+                .from(item)
+                .where(predicates)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        // Count Query
+        Long count = jpaQueryFactory.select(item.count())
+                .from(item)
+                .where(predicates)
+                .fetchOne();
+
+        return new PageImpl<>(result, pageable, count);
     }
 
-    public String keywordWhereQuery(String keyword) {
-        if(!StringUtils.hasText(keyword)) return null;
-
-        String keywordLowerCase = keyword.toLowerCase();
-        String query = "LOWER(i.name) LIKE CONCAT('%', ':keyword', '%')";
-        return query.replace(":keyword", keywordLowerCase);
+    public Predicate keywordWhereQuery(String keyword) {
+        return StringUtils.hasText(keyword) ? item.name.containsIgnoreCase(keyword) : null;
     }
 }

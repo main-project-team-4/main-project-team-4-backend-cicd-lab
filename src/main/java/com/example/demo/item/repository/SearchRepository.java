@@ -1,9 +1,9 @@
 package com.example.demo.item.repository;
 
 import com.example.demo.item.entity.Item;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface SearchRepository {
-    List<Item> searchBy(String keyword);
+    Page<Item> searchBy(String keyword, Pageable pageable);
 }

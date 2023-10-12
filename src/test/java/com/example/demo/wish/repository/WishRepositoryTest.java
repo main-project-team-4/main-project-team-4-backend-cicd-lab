@@ -1,6 +1,7 @@
 package com.example.demo.wish.repository;
 
 import com.example.demo.member.entity.Member;
+import com.example.demo.utils.EnableQuerydslTest;
 import com.example.demo.utils.LoadTeatCaseWish;
 import com.example.demo.wish.entity.Wish;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 @DataJpaTest
+@EnableQuerydslTest
 class WishRepositoryTest {
     @Autowired
     private WishRepository wishRepository;
