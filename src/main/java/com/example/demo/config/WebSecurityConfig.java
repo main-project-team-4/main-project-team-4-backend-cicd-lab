@@ -69,12 +69,11 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher("/api/auth/**")).permitAll()
 
                         // 카테고리 API
-//                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories")).permitAll()
-//                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*")).permitAll()
-//                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/categories")).permitAll()
-//                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/all/categories")).permitAll()
-//                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/items")).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/**")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/categories")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/all/categories")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/items")).permitAll()
 
                         // swagger
                         .requestMatchers(antMatcher("/")).permitAll()
@@ -94,7 +93,8 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/members/*/followings")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/mypages/followerlists")).authenticated()
 
-                        .anyRequest().authenticated()
+//                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
         );
 
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
