@@ -53,6 +53,11 @@ public class Shop {
         this.member = member;
     }
 
+    public Shop(Member member){
+        this.shopName = member.getNickname();
+        this.member = member;
+    }
+
     public void update(ShopRequestDto requestDto){
         this.shopIntro = requestDto.getShopIntro();
     }
