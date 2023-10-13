@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,9 +39,6 @@ public class MemberService {
 
         // username 중복 확인
         validateUniqueUsername(username);
-
-        // phone 인증 과정
-        validatePhoneNumber(phoneNum);
 
         // location 저장
         List<Location> locationList = loadOrSaveLocation(location);
@@ -68,10 +66,6 @@ public class MemberService {
         }
     }
 
-    private void validatePhoneNumber(String phoneNum) {
-        // TODO 휴대폰 인증
-    }
-
     private List<Location> loadOrSaveLocation(String location) {
         Location entity = locationRepository.findByName(location)
                 .orElseGet(() -> saveLocation(location));
@@ -83,32 +77,39 @@ public class MemberService {
         return locationRepository.save(entity);
     }
 
-     public ResponseEntity<MessageResponseDto> deleteMember(LoginRequestDto request, String token) {
+     public ResponseEntity<MessageResponseDto> deleteMember(Member member) {
+        memberRepository.delete(member);
 
-        String username = request.getUsername();//username을 받아서 삭제
-        String password = request.getPassword();//password를 받아서 삭제
-
-        Member member = memberRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
-        );
-        if(!passwordEncoder.matches(password, member.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-
-        memberRepository.delete(member);//삭제
         MessageResponseDto msg = new MessageResponseDto("회원탈퇴에 성공하였습니다.", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(msg);
      }
 
     @Transactional
-    public ResponseEntity<MessageResponseDto> updateMember(MemberInfoRequestDto request, String token) {
+    public ResponseEntity<MessageResponseDto> updateMember(
+            MemberInfoRequestDto request,
+            Member memberLoggedIn
+    ) {
+        // 닉네임 변경.
+        changeNickname(memberLoggedIn, request.getNickname());
 
-        String username = request.getUsername();
-        String nickname = request.getNickname();
-        Member member = memberRepository.findByUsername(username).get();
-        member.setNickname(nickname);
-        memberRepository.save(member);
+        // 변경된 내용 저장.
+        memberRepository.save(memberLoggedIn);
+
         MessageResponseDto msg = new MessageResponseDto("회원정보 수정에 성공하였습니다.", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(msg);
+    }
+
+    private void changeNickname(Member member, String nickname) {
+        if(!StringUtils.hasText(nickname)) return;
+
+        validateUniqueNickname(nickname);
+        member.setNickname(nickname);
+    }
+
+    private void validateUniqueNickname(String nickname) {
+        Optional<Member> checkUsername = memberRepository.findByNickname(nickname);
+        if(checkUsername.isPresent()){
+            throw new IllegalArgumentException("중복된 Nickname 입니다.");
+        }
     }
 }
