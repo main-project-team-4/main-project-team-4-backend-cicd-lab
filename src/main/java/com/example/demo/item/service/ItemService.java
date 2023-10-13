@@ -139,6 +139,11 @@ public class ItemService {
         return ResponseEntity.ok(dtoList);
     }
 
+    // 랭킹 Top 20 조회
+    public List<Item> updateRanking() {
+        return itemRepository.findTop100ByOrderByWishCountDesc();
+    }
+
     public ItemResponseDto showItem(Long id) {
         Item item = findItem(id);
         return new ItemResponseDto(item);
