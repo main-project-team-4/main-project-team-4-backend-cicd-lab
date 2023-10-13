@@ -1,6 +1,5 @@
 package com.example.demo.category.entity;
 
-import com.example.demo.category.dto.CategoryRequestDto;
 import com.example.demo.item.entity.Item;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,16 +24,4 @@ public class CategoryM {
 
     @OneToMany(mappedBy = "categoryMidId")
     private List<Item> items = new ArrayList<>();
-
-    public CategoryM(String name, CategoryL parent) {
-        this.name = name;
-        this.parent = parent;
-    }
-
-    public void update(CategoryRequestDto request) {
-        String name = request.getName();
-        if(name != null && !name.isBlank()) {
-            this.name = name;
-        }
-    }
 }
