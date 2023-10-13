@@ -4,6 +4,7 @@ package com.example.demo.member.controller;
 import com.example.demo.dto.MessageResponseDto;
 import com.example.demo.member.dto.LoginRequestDto;
 import com.example.demo.member.dto.MemberInfoRequestDto;
+import com.example.demo.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -48,7 +49,8 @@ public interface MemberDocs {
             )
     )
     ResponseEntity<MessageResponseDto> updateMember(
-            @Valid @RequestBody MemberInfoRequestDto request, @RequestHeader("Authorization") String token);
+            MemberInfoRequestDto request,
+            UserDetailsImpl principal);
 
 
     @Operation(
@@ -80,7 +82,7 @@ public interface MemberDocs {
                     schema = @Schema(implementation = ErrorResponse.class)
             )
     )
-    ResponseEntity<MessageResponseDto> deleteMember(@Valid @RequestBody LoginRequestDto request, @RequestHeader("Authorization") String token);
+    ResponseEntity<MessageResponseDto> deleteMember(UserDetailsImpl principal);
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.demo.member.repository;
 
 import com.example.demo.member.entity.Member;
+import com.example.demo.utils.EnableQuerydslTest;
 import com.example.demo.utils.LoadTeatCaseFollow;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 @DataJpaTest
+@EnableQuerydslTest
 class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;

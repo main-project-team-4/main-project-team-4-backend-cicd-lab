@@ -1,5 +1,6 @@
 package com.example.demo.category.controller;
 
+import com.example.demo.category.dto.CategoryBundleResponseDto;
 import com.example.demo.category.dto.CategoryResponseDto;
 import com.example.demo.category.dto.ItemInCategoryResponseDto;
 import com.example.demo.category.service.CategoryService;
@@ -38,5 +39,15 @@ class CategoryController implements CategoryDocs{
             @RequestParam(defaultValue = "2") int layer
     ) {
         return categoryService.readChildItem(categoryId, layer);
+    }
+
+    @GetMapping("/api/categories")
+    public ResponseEntity<List<CategoryResponseDto>> readCategoryLarge() {
+        return categoryService.readItemsLarge();
+    }
+
+    @GetMapping("/api/categories/all/categories")
+    public ResponseEntity<List<CategoryBundleResponseDto>> readCategoryRecursively() {
+        return categoryService.readCategoryRecursively();
     }
 }

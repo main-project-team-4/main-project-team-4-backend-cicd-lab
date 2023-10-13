@@ -18,8 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -71,12 +69,10 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher("/api/auth/**")).permitAll()
 
                         // 카테고리 API
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/categories")).hasRole("ADMIN")
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/categories/*/categories")).hasRole("ADMIN")
-                        .requestMatchers(antMatcher(HttpMethod.PUT, "/api/categories/*")).hasRole("ADMIN")
-                        .requestMatchers(antMatcher(HttpMethod.DELETE, "/api/categories/*")).hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/categories")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/all/categories")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/items")).permitAll()
 
                         // swagger
@@ -97,20 +93,13 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/members/*/followings")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/mypages/followerlists")).authenticated()
 
-                        // websocket
-                        .requestMatchers(HttpMethod.POST, "/chat").permitAll()
-                        .requestMatchers(webSocketRequestMatcher()).permitAll()
-
-                        .anyRequest().authenticated()
+//                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
         );
 
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    private RequestMatcher webSocketRequestMatcher() {
-        return new AntPathRequestMatcher("/ws/chat");
     }
 }

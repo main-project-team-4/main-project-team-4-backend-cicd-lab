@@ -59,7 +59,10 @@ public class Member {
         this.locations.addAll(locations);
     }
 
-
+    public Member(String username, String nickname) {
+        this.username = username;
+        this.nickname = nickname;
+    }
 
     public void updateMember(String username, String password, String nickname, String phoneNum, URL image) {
         this.username = username;

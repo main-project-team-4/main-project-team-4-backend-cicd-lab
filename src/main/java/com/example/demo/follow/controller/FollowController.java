@@ -46,4 +46,13 @@ public class FollowController implements FollowDocs {
     ) {
         return followService.readFollowingsByMemberId(principal.getMember().getId());
     }
+
+    @GetMapping("/api/shops/{shop_id}/followers")
+    public ResponseEntity<List<FollowMemberResponseDto>> readFollowerListByShopId(
+            @PathVariable("shop_id") Long shopId, @AuthenticationPrincipal UserDetailsImpl principal
+    ) {
+        return followService.readFollowersByShopId(shopId, principal.getMember().getId());
+    }
+
+
 }

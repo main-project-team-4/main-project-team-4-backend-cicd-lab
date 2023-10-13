@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
-    Optional<Member> findByUsername(String email);
+    Optional<Member> findByUsername(String username);
 
     Member findMemberByUsername(String username);
 
@@ -23,4 +23,6 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
             "JOIN s.follows f " +
             "WHERE f.member.id = :memberId")
     List<Member> findFollowingsByMember_Id(Long memberId);
+
+    Optional<Member> findByNickname(String nickname);
 }

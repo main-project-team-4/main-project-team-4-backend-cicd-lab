@@ -49,4 +49,11 @@ public class FollowService {
                 .toList();
         return ResponseEntity.ok(dtoList);
     }
+
+    public ResponseEntity<List<FollowMemberResponseDto>> readFollowersByShopId(Long shopId, Long id) {
+        List<FollowMemberResponseDto> dtoList = memberRepository.findFollowersByMember_Id(shopId).stream()
+                .map(FollowMemberResponseDto::new)
+                .toList();
+        return ResponseEntity.ok(dtoList);
+    }
 }

@@ -2,6 +2,7 @@ package com.example.demo.item;
 
 import com.example.demo.item.entity.Item;
 import com.example.demo.item.repository.ItemRepository;
+import com.example.demo.utils.EnableQuerydslTest;
 import com.example.demo.utils.LoadTeatCaseCategory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @DataJpaTest
+@EnableQuerydslTest
 class ItemRepositoryTest {
     @Autowired
     private ItemRepository itemRepository;

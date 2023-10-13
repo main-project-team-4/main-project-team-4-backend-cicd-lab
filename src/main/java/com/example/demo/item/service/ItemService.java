@@ -10,6 +10,8 @@ import com.example.demo.member.entity.Member;
 import com.example.demo.shop.entity.Shop;
 import com.example.demo.shop.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -128,13 +130,18 @@ public class ItemService {
         return ResponseEntity.status(HttpStatus.OK).body(msg);
     }
 
-    public ResponseEntity<List<ItemSearchResponseDto>> searchItem(
-            String keyword
+    public ResponseEntity<Page<ItemSearchResponseDto>> searchItem(
+            String keyword,
+            Pageable pageable
     ) {
-        List<ItemSearchResponseDto> dtoList = itemRepository.searchBy(keyword).stream()
-                .map(ItemSearchResponseDto::new)
-                .toList();
+        Page<ItemSearchResponseDto> dtoList = itemRepository.searchBy(keyword, pageable)
+                .map(ItemSearchResponseDto::new);
         return ResponseEntity.ok(dtoList);
+    }
+
+    // 랭킹 Top 20 조회
+    public List<Item> updateRanking() {
+        return itemRepository.findTop100ByOrderByWishCountDesc();
     }
 
     public ItemResponseDto showItem(Long id) {

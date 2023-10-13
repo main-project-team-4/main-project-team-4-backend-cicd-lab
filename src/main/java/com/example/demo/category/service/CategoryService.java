@@ -1,5 +1,6 @@
 package com.example.demo.category.service;
 
+import com.example.demo.category.dto.CategoryBundleResponseDto;
 import com.example.demo.category.dto.CategoryResponseDto;
 import com.example.demo.category.dto.ItemInCategoryResponseDto;
 import com.example.demo.category.entity.CategoryL;
@@ -84,5 +85,19 @@ public class CategoryService {
     private CategoryType getTypeByLayer(int layer) {
         return CategoryType.getTypeByLayer(layer)
                 .orElseThrow(() -> new IllegalArgumentException(layer + " 라는 Layer는 존재하지 않습니다."));
+    }
+
+    public ResponseEntity<List<CategoryResponseDto>> readItemsLarge() {
+        List<CategoryResponseDto> categoryList = categoryLRepository.findAll().stream()
+                .map(CategoryResponseDto::new)
+                .toList();
+        return ResponseEntity.ok(categoryList);
+    }
+
+    public ResponseEntity<List<CategoryBundleResponseDto>> readCategoryRecursively() {
+        List<CategoryBundleResponseDto> dtoList = categoryLRepository.findAllRecursively().stream()
+                .map(CategoryBundleResponseDto::new)
+                .toList();
+        return ResponseEntity.ok(dtoList);
     }
 }
