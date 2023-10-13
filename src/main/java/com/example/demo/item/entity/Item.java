@@ -1,6 +1,7 @@
 package com.example.demo.item.entity;
 
 import com.example.demo.category.entity.CategoryM;
+import com.example.demo.chat.entity.ChatRoom;
 import com.example.demo.entity.TimeStamp;
 import com.example.demo.member.entity.Member;
 import com.example.demo.shop.entity.Shop;
@@ -59,6 +60,9 @@ public class Item extends TimeStamp {
     @OneToMany(mappedBy = "item")
     @Column(name = "wish_list")
     private List<Wish> wishList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<ChatRoom> itemChatRoom = new ArrayList<>();
 
     public Item(String name, int price, String comment, URL main_image, List<URL> sub_images, Shop shop) {
         this.id = getId();
