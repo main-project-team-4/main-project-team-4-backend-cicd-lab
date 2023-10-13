@@ -93,7 +93,14 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/members/*/followings")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/mypages/followerlists")).authenticated()
 
-//                        .anyRequest().authenticated()
+                        // websocket
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/chat/**")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/chat/**")).permitAll()
+                        .requestMatchers(antMatcher("/webjars/**")).permitAll()
+                        .requestMatchers(antMatcher("/ws-stomp/**")).permitAll()
+                        //.requestMatchers(antMatcher("/ws/chat")).permitAll()
+
+                        //.anyRequest().authenticated()
                         .anyRequest().permitAll()
         );
 

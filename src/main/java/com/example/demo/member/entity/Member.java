@@ -1,5 +1,6 @@
 package com.example.demo.member.entity;
 
+import com.example.demo.chat.entity.ChatRoom;
 import com.example.demo.follow.entity.Follow;
 import com.example.demo.location.entity.MemberLocation;
 import com.example.demo.shop.entity.Shop;
@@ -39,6 +40,24 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Follow> followList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "seller")
+    private List<ChatRoom> sellerChatRoomList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "consumer")
+    private List<ChatRoom> consumerChatRoomList = new ArrayList<>();
+
+    public Member(String username, String password, String nickname, String phoneNum, List<Location> locations) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.phoneNum = phoneNum;
+
+        for (Location location : locations) {
+            location.setMember(this);
+        }
+        this.locations.addAll(locations);
+    }
 
     public Member(String username, String nickname) {
         this.username = username;
