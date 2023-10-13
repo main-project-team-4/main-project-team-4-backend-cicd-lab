@@ -69,13 +69,10 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher("/api/auth/**")).permitAll()
 
                         // 카테고리 API
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/categories")).hasRole("ADMIN")
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/categories/*/categories")).hasRole("ADMIN")
-                        .requestMatchers(antMatcher(HttpMethod.PUT, "/api/categories/*")).hasRole("ADMIN")
-                        .requestMatchers(antMatcher(HttpMethod.DELETE, "/api/categories/*")).hasRole("ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/categories")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/all/categories")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/categories/*/items")).permitAll()
 
                         // swagger

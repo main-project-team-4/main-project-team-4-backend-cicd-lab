@@ -1,5 +1,6 @@
 package com.example.demo.category.service;
 
+import com.example.demo.category.dto.CategoryBundleResponseDto;
 import com.example.demo.category.dto.CategoryResponseDto;
 import com.example.demo.category.dto.ItemInCategoryResponseDto;
 import com.example.demo.category.entity.CategoryL;
@@ -91,5 +92,12 @@ public class CategoryService {
                 .map(CategoryResponseDto::new)
                 .toList();
         return ResponseEntity.ok(categoryList);
+    }
+
+    public ResponseEntity<List<CategoryBundleResponseDto>> readCategoryRecursively() {
+        List<CategoryBundleResponseDto> dtoList = categoryLRepository.findAllRecursively().stream()
+                .map(CategoryBundleResponseDto::new)
+                .toList();
+        return ResponseEntity.ok(dtoList);
     }
 }
