@@ -3,9 +3,9 @@ package com.example.demo.item.entity;
 import com.example.demo.category.entity.CategoryM;
 import com.example.demo.chat.entity.ChatRoom;
 import com.example.demo.entity.TimeStamp;
-import com.example.demo.member.entity.Member;
+import com.example.demo.location.entity.ItemLocation;
+import com.example.demo.location.entity.MemberLocation;
 import com.example.demo.shop.entity.Shop;
-import com.example.demo.location.entity.Location;
 import com.example.demo.trade.type.State;
 import com.example.demo.wish.entity.Wish;
 import jakarta.persistence.*;
@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Entity
 @Getter
@@ -47,7 +46,7 @@ public class Item extends TimeStamp {
 
     @ManyToOne
     @JoinColumn(name = "location_id")
-    private Location location;
+    private MemberLocation location;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
@@ -63,6 +62,9 @@ public class Item extends TimeStamp {
 
     @OneToMany(mappedBy = "item")
     private List<ChatRoom> itemChatRoom = new ArrayList<>();
+
+    @OneToOne(mappedBy = "item", cascade = CascadeType.PERSIST)
+    private ItemLocation itemLocation;
 
     public Item(String name, int price, String comment, URL main_image, List<URL> sub_images, Shop shop) {
         this.id = getId();
