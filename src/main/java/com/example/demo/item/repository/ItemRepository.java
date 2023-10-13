@@ -17,4 +17,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>, SearchReposit
             "JOIN FETCH i.categoryMidId " +
             "WHERE i.categoryMidId.id = :id")
     List<Item> findByCategoryMiddleId(Long id);
+
+    // Item의 wish 많은 기준으로 상위 20개 상품을 가져오는 쿼리
+    @Query("SELECT r FROM Item r ORDER BY (select count (w) from Wish w WHERE w.item.id = r.id) DESC limit 100")
+    List<Item> findTop100ByOrderByWishCountDesc();
 }

@@ -2,9 +2,11 @@ package com.example.demo.item.entity;
 
 import com.example.demo.category.entity.CategoryM;
 import com.example.demo.entity.TimeStamp;
+import com.example.demo.member.entity.Member;
 import com.example.demo.shop.entity.Shop;
 import com.example.demo.location.entity.Location;
 import com.example.demo.trade.type.State;
+import com.example.demo.wish.entity.Wish;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,6 +55,10 @@ public class Item extends TimeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_mid_id")
     private CategoryM categoryMidId;
+
+    @OneToMany(mappedBy = "item")
+    @Column(name = "wish_list")
+    private List<Wish> wishList = new ArrayList<>();
 
     public Item(String name, int price, String comment, URL main_image, List<URL> sub_images, Shop shop) {
         this.id = getId();
