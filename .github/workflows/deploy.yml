@@ -30,7 +30,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             source script/set_env.sh
-            echo 'success setting env'
+            touch logfilefortest.sh
           
       # - name: Deploy Jar
       #   run: |
