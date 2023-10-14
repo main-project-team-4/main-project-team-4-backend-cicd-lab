@@ -24,7 +24,7 @@ jobs:
 
       - name: Set Private Key
         run: |
-          cat ${{ secrets.SSH_PRIVATE_KEY }} > pk.pem
+          echo ${{ secrets.SSH_PRIVATE_KEY }} > pk.pem
 
       - name: Set Env Variables In Test Server
         run: |
