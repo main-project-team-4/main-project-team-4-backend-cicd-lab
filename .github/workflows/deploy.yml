@@ -30,6 +30,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             source script/set_env.sh
+            echo $PROFILE
 
       - name: Deploy Jar
         uses: appleboy/scp-action@v0.1.4
