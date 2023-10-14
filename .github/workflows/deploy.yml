@@ -16,19 +16,18 @@ jobs:
 
       # - name: Set Env Variables In Test Server
       #   run: |
-      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'cat {{ secrets.ENV_VAR }} > .env'
-      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source .env'
+      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source script/set_env.sh'
           
       # - name: Deploy Jar
       #   run: |
-      #     scp build/libs/demo-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }}:/jobcat_app.jar
+      #     scp build/libs/demo-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }}:script/jobcat_app.jar
       #   env:
       #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       # - name: Kill Old Program
       #   run: |
-      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} '  '
+      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source script/kill_old_process.sh'
 
       # - name: Run New Program
       #   run: |
-      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'java --jar jobcat_app.jar'
+      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source script/run_new_process.sh'
