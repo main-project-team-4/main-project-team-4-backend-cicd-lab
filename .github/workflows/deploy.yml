@@ -22,6 +22,15 @@ jobs:
           chmod +x ./gradlew
           ./gradlew clean bootJar
 
+      - name: Deploy Jar
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_IP_ADDRESS }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: build/libs/demo-0.0.1-SNAPSHOT.jar
+          target: script
+
       - name: Set Env Variables In Test Server
         uses: appleboy/ssh-action@master
         with:
@@ -31,15 +40,6 @@ jobs:
           script: |
             source script/set_env.sh
             echo $PROFILE
-
-      - name: Deploy Jar
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SSH_IP_ADDRESS }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: build/libs/demo-0.0.1-SNAPSHOT.jar
-          target: script
 
       - name: Kill Old Program
         uses: appleboy/ssh-action@master
