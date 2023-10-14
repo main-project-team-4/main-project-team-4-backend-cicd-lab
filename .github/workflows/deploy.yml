@@ -8,23 +8,24 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      # - name: Checkout
+      #   uses: actions/checkout@v2
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     java-version: '17'
+      #     distribution: 'temurin'
 
-      - name: Build Project With Gradle
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean bootJar
-
-      # - name: Set Env Variables In Test Server
+      # - name: Build Project With Gradle
       #   run: |
-      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source script/set_env.sh'
+      #     chmod +x ./gradlew
+      #     ./gradlew clean bootJar
+
+      - name: Set Env Variables In Test Server
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source script/set_env.sh'
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} "echo 'success setting env'"
           
       # - name: Deploy Jar
       #   run: |
