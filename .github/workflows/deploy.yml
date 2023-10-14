@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: build/libs/demo-0.0.1-SNAPSHOT.jar
-          target: script/jobcat_app.jar
+          target: script
 
       - name: Kill Old Program
         uses: appleboy/ssh-action@master
