@@ -7,8 +7,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: test logging
+        run: |
+          echo "Logging For Test"
+      
+      # - name: Checkout
+      #   uses: actions/checkout@v2
 
       # - name: Build Project With Gradle
       #   run: |
