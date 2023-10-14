@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       # - name: Set up JDK 17
       #   uses: actions/setup-java@v3
@@ -22,15 +22,14 @@ jobs:
       #     chmod +x ./gradlew
       #     ./gradlew clean bootJar
 
-      - name: Set Env Variables In Test Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_IP_ADDRESS }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            source script/set_env.sh
-            touch logfilefortest.sh
+      # - name: Set Env Variables In Test Server
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_IP_ADDRESS }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       source script/set_env.sh
           
       # - name: Deploy Jar
       #   run: |
@@ -39,9 +38,19 @@ jobs:
       #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       # - name: Kill Old Program
-      #   run: |
-      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source script/kill_old_process.sh'
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_IP_ADDRESS }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       source script/kill_old_process.sh
 
       # - name: Run New Program
-      #   run: |
-      #     ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source script/run_new_process.sh'
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_IP_ADDRESS }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       source script/run_new_process.sh
