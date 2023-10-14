@@ -57,4 +57,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            source script/set_env.sh
             source script/run_new_process.sh
