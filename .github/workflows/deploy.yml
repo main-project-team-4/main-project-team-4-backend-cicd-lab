@@ -6,13 +6,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Build Project With Gradle
         run: |
-          ./gradlew bootJar
+          chmod +x ./gradlew
+          ./gradlew clean bootJar
 
       # - name: Set Env Variables In Test Server
       #   run: |
