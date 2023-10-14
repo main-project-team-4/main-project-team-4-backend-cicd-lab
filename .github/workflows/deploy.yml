@@ -7,16 +7,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: test logging
-        run: |
-          echo "Logging For Test"
-      
-      # - name: Checkout
-      #   uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      # - name: Build Project With Gradle
-      #   run: |
-      #     ./gradlew bootJar
+      - name: Build Project With Gradle
+        run: |
+          ./gradlew bootJar
 
       # - name: Set Env Variables In Test Server
       #   run: |
