@@ -30,12 +30,15 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             source script/set_env.sh
-          
+
       - name: Deploy Jar
-        run: |
-          scp build/libs/demo-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }}:script/jobcat_app.jar
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_IP_ADDRESS }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: build/libs/demo-0.0.1-SNAPSHOT.jar
+          target: script/jobcat_app.jar
 
       - name: Kill Old Program
         uses: appleboy/ssh-action@master
