@@ -22,14 +22,15 @@ jobs:
       #     chmod +x ./gradlew
       #     ./gradlew clean bootJar
 
-      - name: Set Private Key
-        run: |
-          echo ${{ secrets.SSH_PRIVATE_KEY }} > pk.pem
-
       - name: Set Env Variables In Test Server
-        run: |
-          ssh -i pk.pem ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} 'source script/set_env.sh'
-          ssh -i pk.pem ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP_ADDRESS }} "echo 'success setting env'"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_IP_ADDRESS }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            source script/set_env.sh
+            echo 'success setting env'
           
       # - name: Deploy Jar
       #   run: |
